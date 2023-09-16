@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: rgb(19, 19, 172);
+}
+
+body {
+    background-color: rgb(250, 250, 251) !important;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    max-width: 70%;
+    margin: auto;
+}
+
+.main-container {
+    padding-top: 1.2rem;
+}
+
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+    display: flex;
+}
+
+.col-4 {
+    padding-left: 15px;
+    padding-right: 15px;
+    float: left;
+    width: 33.33%;
+}
+
+.title {
+    margin-bottom: 15px;
+}
+
+.product-container {
+    width: 100%;
+    margin-bottom: 15px;
+    display: inline-block;
+    height: 20rem;
+    padding: 50px 30px 30px;
+    border-radius: 15px;
+    border: 1px solid #838383
+}
+
+.container-img img {
+    width: 100%;
+    height: 9rem;
+    object-fit: contain;
+}
+
+.container-name {
+    margin-top: 10px;
+}
+
+.container-button button {
+    width: 100%;
+    background-color: var(--main-color);
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.container-button button:hover {
+    opacity: 0.8;
+}
+
+.main-header {
+    background-color: var(--main-color);
+    height: 60px;
+    padding: 10px 0px;
+    position: sticky;
+    top: 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-img {
+    display: inline-block;
+}
+
+.header-img img {
+    width: 35px;
+    object-fit: contain;
+    height: 35px;
+}
+
+.header-search {
+    display: flex;
+    align-items: center;
+    width: 40%;
+}
+
+.header-search i {
+    color: #fff;
+    margin-left: 5px;
+}
+
+.header-search input {
+    width: 100%;
+    float: right;
+    height: 30px;
+    border-radius: 25px;
+    background-color: transparent;
+    border: 1px solid #fff;
+    padding: 10px;
+    color: #fff;
+}
+
+.header-search input::placeholder {
+    color: #fff;
+    opacity: 1;
+}
+
+.header-search input:-ms-input-placeholder, 
+.header-search input::-ms-input-placeholder {
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: var(--main-color) !important;
+    border: none;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-primary i {
+    font-size: 14px;
+}
+
+.container-form {
+    background-color: #eee;
+    padding: 30px;
+    border-radius: 15px;
+}
