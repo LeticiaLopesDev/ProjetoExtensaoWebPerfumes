@@ -8,6 +8,7 @@
 
 :root {
     --main-color: rgb(19, 19, 172);
+    --main-vermelho: #f60000;
 }
 
 body {
@@ -46,7 +47,7 @@ body {
     width: 100%;
     margin-bottom: 15px;
     display: inline-block;
-    height: 20rem;
+    height: 22rem;
     padding: 50px 30px 30px;
     border-radius: 15px;
     border: 1px solid #838383
@@ -151,4 +152,14 @@ body {
     background-color: #eee;
     padding: 30px;
     border-radius: 15px;
+}
+
+.border-red {
+    border: 1px var(--main-vermelho) solid;
+}
+
+.label-error {
+    color: var(--main-vermelho);
+    font-size: 0.85em;
+    float: right;
 }

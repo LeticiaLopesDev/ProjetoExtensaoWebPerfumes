@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Perfumes da Lê</title>
     <link href="assets/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
     <div class="main-header">
@@ -30,115 +31,48 @@
                 <h1>Perfumes</h1>                
             </div>
 
-            <div class="row">
-                <div class="col-4">
+            <div class="row" id="produtos">
+                <div class="col-md-3 d-none" id="div-clone">
                     <div class="product-container">
                         <div class="container-img">
-                            <img src="assets/img/covet.png" alt="Perfume com nome Covet">
+                            <img class="imagem" src="#">
                         </div>
                         <div class="container-name">
-                            <h3>Covet</h3>
+                            <h3 class="descricao"></h3>
                         </div>
                         <div class="container-price">
-                            <span>R$ 100,00</span>
+                            <span class="valor"></span>
                         </div>
                         <div class="container-button">
                             <button id="comprar">Comprar</button>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-4">
-                    <div class="product-container">
-                        <div class="container-img">
-                            <img src="assets/img/absynthe.png" alt="Perfume com nome Absynthe">
-                        </div>
-                        <div class="container-name">
-                            <h3>Absynthe</h3>
-                        </div>
-                        <div class="container-price">
-                            <span>R$ 120,00</span>
-                        </div>
-                        <div class="container-button">
-                            <button id="comprar">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <div class="product-container">
-                        <div class="container-img">
-                            <img src="assets/img/amarige.png" alt="Perfume com nome Amarige">
-                        </div>
-                        <div class="container-name">
-                            <h3>Amarige</h3>
-                        </div>
-                        <div class="container-price">
-                            <span>R$ 150,00</span>
-                        </div>
-                        <div class="container-button">
-                            <button id="comprar">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-4">
-                    <div class="product-container">
-                        <div class="container-img">
-                            <img src="assets/img/echo.png" alt="Perfume com nome Echo">
-                        </div>
-                        <div class="container-name">
-                            <h3>Echo</h3>
-                        </div>
-                        <div class="container-price">
-                            <span>R$ 90,00</span>
-                        </div>
-                        <div class="container-button">
-                            <button id="comprar">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <div class="product-container">
-                        <div class="container-img">
-                            <img src="assets/img/outspoken.png" alt="Perfume com nome Outspoken">
-                        </div>
-                        <div class="container-name">
-                            <h3>Outspoken</h3>
-                        </div>
-                        <div class="container-price">
-                            <span>R$ 150,00</span>
-                        </div>
-                        <div class="container-button">
-                            <button id="comprar">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <div class="product-container">
-                        <div class="container-img">
-                            <img src="assets/img/surreal.png" alt="Perfume com nome Surreal">
-                        </div>
-                        <div class="container-name">
-                            <h3>Surreal</h3>
-                        </div>
-                        <div class="container-price">
-                            <span>R$ 180,00</span>
-                        </div>
-                        <div class="container-button">
-                            <button id="comprar">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>                
             
         </div>        
     </div>   
     
     <script src="https://kit.fontawesome.com/6e6174bc68.js" crossorigin="anonymous"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+        fetch('https://localhost:7045/api/produto/getall'   )
+        .then(data  => { return data.json() })
+        .then(produtos => {  
+            produtos.forEach(produto => {
+                var div = document.getElementById("div-clone").cloneNode(true);
+                div.removeAttribute("id", "");
+                div.classList.remove("d-none");
+                div.setAttribute("data-id", produto.id);
+                div.getElementsByClassName("descricao")[0].innerHTML = produto.descricao;
+                div.getElementsByClassName("valor")[0].innerHTML = parseFloat(produto.valor).toLocaleString('pt-BR', { style: "currency", currency: "BRL"});
+                div.getElementsByClassName("imagem")[0].setAttribute('src', `https://localhost:7045/api/produto/${produto.id}/image`)
+                   
+                var divProdutos = document.querySelector("#produtos");
+                divProdutos.appendChild(div);
+            });
+         });
+    </script>
+
 </body>
 </html>
