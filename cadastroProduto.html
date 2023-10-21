@@ -25,15 +25,16 @@
                 <form id="form-produto">
                     <div class="mb-3">
                         <label for="descricao" class="form-label">Descrição</label>
-                        <input type="text" class="form-control" id="descricao">
+                        <input type="text" class="form-control" id="descricao" name="Descricao">
                     </div>
                     <div class="mb-3">
                         <label for="valor" class="form-label">Valor</label>
-                        <input type="text" class="form-control" id="valor">
+                        <input type="text" class="form-control" id="valor" name="Valor">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="imagem" class="form-label">Imagem</label>
-                        <input type="file" accept="image/png, image/jpeg" class="form-control" id="imagem">
+                        <input type="file" accept="image/png, image/jpeg" class="form-control" 
+                            id="imagem" name="Imagem">
                     </div>
                     <div class="text-end">
                         <a href="produtos.html" class="btn btn-default">Cancelar</a>
@@ -45,5 +46,92 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+        var elDescricao = document.getElementById('descricao');
+        elDescricao.focus();
+
+        var valido = true;
+        var submited = false;
+
+        function IsNumeric(str) {
+            return !!str.match(/^-?\d*\.?\d+$/);
+        }
+
+        function validarRequired(element){
+            var elLabelErro = document.createElement('span');
+            elLabelErro.classList.add('label-error');
+            elLabelErro.innerHTML = "Campo Obrigatório";
+
+            element.classList.remove('border-red');
+            var elLabelRemove = element.parentElement.getElementsByClassName('label-error');
+            if (elLabelRemove.length > 0)
+                element.parentElement.removeChild(element.parentElement.lastChild);
+
+            if (element.value === ''){
+                element.classList.add('border-red');
+                element.parentElement.appendChild(elLabelErro.cloneNode(true));
+                valido = false;
+            }
+        }
+
+        function validarValor(element){
+            var elLabelErro = document.createElement('span');
+            elLabelErro.classList.add('label-error');
+            elLabelErro.innerHTML = "Valor inválido";
+
+            if (element.value !== ''){
+                element.classList.remove('border-red');
+                var elLabelRemove = element.parentElement.getElementsByClassName('label-error');
+                if (elLabelRemove.length > 0)
+                    element.parentElement.removeChild(element.parentElement.lastChild);
+
+                if (!IsNumeric(element.value.replace('.', '').replace(',', '.'))){
+                    element.classList.add('border-red');
+                    element.parentElement.appendChild(elLabelErro.cloneNode(true));
+                    valido = false;
+                }
+            }
+        }
+
+        function salvarProduto(event){
+            event.preventDefault();
+            valido = true;
+
+            validarRequired(elDescricao);
+            validarRequired(document.getElementById('imagem'));
+
+            var elValor = document.getElementById('valor');
+            validarRequired(elValor);
+            validarValor(elValor);
+
+            if (valido === true && submited === false){
+                submited = true;
+                
+                var elForm = document.getElementById('form-produto');
+
+                fetch('https://localhost:7045/api/produto', {
+                            method: 'POST',
+                            body: new FormData(elForm)
+                        }
+                    ).then(response => {
+                        submited = false;
+                        if (response.ok){
+                            alert('produto cadastrado com sucesso');
+                            elForm.reset();
+                            elDescricao.focus();
+                        } else {
+                            alert('houve um problema ao cadastrar o produto');
+                            response.json().then(json => console.log(json));
+                        }
+                    }).catch(response => {
+                        submited = false;
+                        alert('houve um problema ao cadastrar o produto');
+                    });
+
+            }
+        }
+
+        document.getElementById('form-produto').addEventListener('submit', salvarProduto);
+    </script>
 </body>
 </html>

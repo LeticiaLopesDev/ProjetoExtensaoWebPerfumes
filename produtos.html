@@ -39,8 +39,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr id="tr-loading">
+                                <td colspan="3" class="text-center p-2">
+                                    <img src="assets/img/loading.gif" width="25">
+                                </td>
+                            </tr>
+                            <tr id="tr-sem-produto" class="d-none">
                                 <td colspan="3" class="text-center">Não há produtos cadastrados</td>
+                            </tr>
+                            <tr id="tr-base" class="d-none">
+                                <td class="descricao"></td>
+                                <td class="valor"></td>
+                                <td class="text-end"> 
+                                    <a href="#" class="btn-excluir">
+                                        <i class="fa-solid fa-trash" style="color: var(--main-vermelho);"></i>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,5 +65,50 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6e6174bc68.js" crossorigin="anonymous"></script>
+    <script>
+        function removerProduto(event){
+            var id = this.getAttribute('data-id');
+            fetch('https://localhost:7045/api/produto?id=' + id, { method: 'DELETE'})
+            .then(response => {
+                if (response.ok){
+                    alert('produto foi removido com sucesso');
+                    var tbody = document.querySelector('tbody');
+                    tbody.removeChild(tbody.querySelector('[data-id="' + id + '"]'));            
+                    
+                    if(tbody.querySelectorAll('.tr-visible').length == 0)
+                        document.getElementById('tr-sem-produto').classList.remove('d-none');
+                }
+            });
+        }
+
+        fetch('https://localhost:7045/api/produto/getall')
+        .then(data => {return data.json()})
+        .then(produtos => {
+            document.getElementById('tr-loading').classList.add('d-none');
+
+            if (produtos.length == 0)
+                document.getElementById('tr-sem-produto').classList.remove('d-none');
+
+            produtos.forEach(produto => {
+                var tr = document.getElementById('tr-base').cloneNode(true);
+                tr.setAttribute('id', '');
+                tr.classList.add('tr-visible');
+                tr.classList.remove('d-none');
+                tr.setAttribute('data-id', produto.id);
+                tr.getElementsByClassName('descricao')[0].innerHTML = produto.descricao;
+                tr.getElementsByClassName('valor')[0].innerHTML = 
+                    parseFloat(produto.valor)
+                    .toLocaleString('pt-BR', { style: "currency", currency: "BRL"});
+                
+                var elBtnExcluir = tr.getElementsByClassName('btn-excluir')[0];
+                elBtnExcluir.setAttribute('data-id', produto.id);
+                elBtnExcluir.addEventListener('click', removerProduto);
+
+                var tbody = document.querySelector('tbody');
+                tbody.appendChild(tr);
+            });
+        })
+    </script>
 </body>
 </html>
